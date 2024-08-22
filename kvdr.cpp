@@ -2,68 +2,81 @@
 #include <math.h>
 #include <TXLib.h>
 
+struct Coeffs {
+    float a, b, c;
+};
+
+struct Roots {
+    float x1, x2;
+    int nRoots;
+};
+
 struct UnitTest {
     int numtest;
-    float a, b, c;
-    float x1exp, x2exp;
-    int colvoexp;
+    Coeffs abc;
+    Roots sol;
 };
 
 const float EPS = 1e-9f;
 const int INF_NUM_OF_ROOTS = -1;
 
-void InputABC(float* a, float* b, float* c, bool* NoDate);
+bool InputABC(Coeffs *abc);
 bool SpaceBeforeEndl();
-float Discriminant(float a, float b, float c);
+float Discriminant(Coeffs abc);
 bool IsClose(float x, float y);
-void SolveQuad(float a, float b, float c, int* colvo, float* x1, float* x2);
-void SolveLinear(float b, float c, int* colvo, float* x1);
-void AnswerOutput(int colvo, float x1, float x2);
-bool RunTest(UnitTest* test);
-bool RunAllTests(UnitTest* test1, UnitTest* test2, UnitTest* test3, UnitTest* test4, UnitTest* test5, UnitTest* test6, UnitTest* test7, UnitTest* test8, UnitTest* test9, UnitTest* test10);
+void SolveQuad(Coeffs abc, Roots *sol);
+void SolveLinear(float b, float c, int* nRoots, float* x1);
+void AnswerOutput(Roots sol);
+bool RunTest(UnitTest);
+bool RunAllTests(UnitTest test1, UnitTest test2, UnitTest test3,
+                 UnitTest test4, UnitTest test5, UnitTest test6,
+                 UnitTest test7, UnitTest test8, UnitTest test9,
+                 UnitTest test10, UnitTest test11, UnitTest test12);
 
 int main() {
-    float a = 0, b = 0, c = 0, x1 = 0, x2 = 0;
-    int colvo = 0;
-    bool NoDate = false;
-    struct UnitTest test1 = {1, 0, 0, 0, 0, 0, INF_NUM_OF_ROOTS};
-    struct UnitTest test2 = {2, 1, 1, 1, 0, 0, 0};
-    struct UnitTest test3 = {3, 0, 1, 1, -1, 0, 1};
-    struct UnitTest test4 = {4, 1, 0, -4, -2, 2, 2};
-    struct UnitTest test5 = {5, 1, 1, -12, -4, 3, 2};
-    struct UnitTest test6 = {6, 0, 0, 7, 0, 0, 0};
-    struct UnitTest test7 = {7, 1, 1, -2, -2, 1, 2};
-    struct UnitTest test8 = {8, 0, 4, -4, 1, 0, 1};
-    struct UnitTest test9 = {9, 1, 1, 0, -1, 0, 2};
-    struct UnitTest test10 = {10, 1, 0, 0, 0, 0, 1};
-    if (RunAllTests(&test1, &test2, &test3, &test4, &test5, &test6, &test7, &test8, &test9, &test10)) {
+    struct Coeffs abc = {0, 0, 0};
+    struct Roots sol = {0, 0, 0};
+    struct UnitTest test1 = {1, {0, 0, 0}, {0, 0, INF_NUM_OF_ROOTS}};
+    struct UnitTest test2 = {2, {1, 1, 1}, {0, 0, 0}};
+    struct UnitTest test3 = {3, {0, 1, 1}, {-1, 0, 1}};
+    struct UnitTest test4 = {4, {1, 0, -4}, {-2, 2, 2}};
+    struct UnitTest test5 = {5, {1, 1, -12}, {-4, 3, 2}};
+    struct UnitTest test6 = {6, {0, 0, 7}, {0, 0, 0}};
+    struct UnitTest test7 = {7, {1, 1, -2}, {-2, 1, 2}};
+    struct UnitTest test8 = {8, {0, 4, -4}, {1, 0, 1}};
+    struct UnitTest test9 = {9, {1, 1, 0}, {-1, 0, 2}};
+    struct UnitTest test10 = {10, {1, 0, 0}, {0, 0, 1}};
+    struct UnitTest test11 = {11, {1, 1, 0.25}, {-0.5, 0, 1}};
+    struct UnitTest test12 = {12, {1, 1, -12}, {-4, 3, 2}};
+    if (RunAllTests(test1, test2, test3, test4,
+                    test5, test6, test7, test8,
+                    test9, test10, test11, test12)) {
         printf("All tests are passed\n");
     }
     printf("Введите a, b, c: ");
 
-    InputABC(&a, &b, &c, &NoDate);
-    if (NoDate) {
+    if (!InputABC(&abc)) {
         return 1;
     }
-    SolveQuad(a, b, c, &colvo, &x1, &x2);
-    AnswerOutput(colvo, x1, x2);
+    SolveQuad(abc, &sol);
+    AnswerOutput(sol);
     return 0;
 }
 
-void InputABC(float* a, float* b, float* c, bool* NoDate) {
-    assert(a != NULL);
-    assert(b != NULL);
-    assert(c != NULL);
+bool InputABC(Coeffs *abc) {
+    assert(&abc->a != NULL);
+    assert(&abc->b != NULL);
+    assert(&abc->c != NULL);
     int symbol = 0;
-    while (scanf("%f %f %f", a, b, c) != 3 || !SpaceBeforeEndl()) {
+    while (scanf("%f %f %f", &abc->a, &abc->b, &abc->c) != 3 || !SpaceBeforeEndl()) {
         if (getchar() == EOF || getchar() == '\n') {
             printf("Недостаточно данных!");
-            *NoDate = true;
-            break;
+            return false;
         }
         while ((symbol = getchar()) != '\n' || symbol != EOF || symbol == ' ') {}
         printf("Введите ещё раз\n");
     }
+    return true;
 }
 
 bool SpaceBeforeEndl() {
@@ -76,8 +89,8 @@ bool SpaceBeforeEndl() {
     return true;
 }
 
-float Discriminant(float a, float b, float c) {
-    return b * b - 4 * a * c;
+float Discriminant(Coeffs abc) {
+    return abc.b * abc.b - 4 * abc.a * abc.c;
 }
 
 bool IsClose(float x, float y) {
@@ -87,39 +100,39 @@ bool IsClose(float x, float y) {
     return false;
 }
 
-void SolveQuad(float a, float b, float c, int* colvo, float* x1, float* x2) {
-    assert(x1 != NULL);
-    assert(x2 != NULL);
-    if (IsClose(a, 0)) {
-        SolveLinear(b, c, colvo, x1);
+void SolveQuad(Coeffs abc, Roots *sol) {
+    assert(&sol->x1 != NULL);
+    assert(&sol->x2 != NULL);
+    if (IsClose(abc.a, 0)) {
+        SolveLinear(abc.b, abc.c, &sol->nRoots, &sol->x1);
     } else {
         float D = 0;
-        D = Discriminant(a, b, c);
+        D = Discriminant(abc);
         if (D < 0) {
-            *colvo = 0;
+            sol->nRoots = 0;
         } else {
             if (IsClose(D, 0)) {
-                *x1 = - b / (2 * a);
-                *colvo = 1;
+                sol->x1 = - abc.b / (2 * abc.a);
+                sol->nRoots = 1;
             } else {
-                *x1 = (- b - sqrtf(D)) / (2 * a);
-                *x2 = (- b + sqrtf(D)) / (2 * a);
-                *colvo = 2;
+                sol->x1 = (- abc.b - sqrtf(D)) / (2 * abc.a);
+                sol->x2 = (- abc.b + sqrtf(D)) / (2 * abc.a);
+                sol->nRoots = 2;
             }
         }
     }
 }
 
-void SolveLinear(float b, float c, int* colvo, float* x1) {
+void SolveLinear(float b, float c, int* nRoots, float* x1) {
     assert(x1 != NULL);
     if (IsClose(b, 0)) {
         if (IsClose(c, 0)) {
-            *colvo = INF_NUM_OF_ROOTS;
+            *nRoots = INF_NUM_OF_ROOTS;
         } else {
-            *colvo = 0;
+            *nRoots = 0;
         }
     } else {
-        *colvo = 1;
+        *nRoots = 1;
         *x1 = - c / b;
         if (IsClose(*x1, 0)) {
             *x1 = 0;
@@ -127,13 +140,13 @@ void SolveLinear(float b, float c, int* colvo, float* x1) {
     }
 }
 
-void AnswerOutput(int colvo, float x1, float x2) {
-    switch(colvo) {
+void AnswerOutput(Roots sol) {
+    switch(sol.nRoots) {
         case 0: printf("нет решений");
                 break;
-        case 1: printf("x = %g", x1);
+        case 1: printf("x = %g", sol.x1);
                 break;
-        case 2: printf("x1 = %g, x2 = %g", x1, x2);
+        case 2: printf("x1 = %g, x2 = %g", sol.x1, sol.x2);
                 break;
         case INF_NUM_OF_ROOTS: printf("любое число");
                                break;
@@ -143,19 +156,21 @@ void AnswerOutput(int colvo, float x1, float x2) {
     }
 }
 
-bool RunTest(UnitTest* test) {
-    float x1 = 0, x2 = 0;
-    int colvo = 0;
-    SolveQuad(test->a, test->b, test->c, &colvo, &x1, &x2);
-    if (!(abs(colvo - test->colvoexp) < EPS) or !(fabs(x1 - test->x1exp) < EPS) or !(fabs(x2 - test->x2exp) < EPS)) {
-        printf("ErrorTest %d: a = %g, b = %g, c = %g, x1 = %g, x2 = %g, colvo = %d\n", test->numtest, test->a, test->b, test->c, x1, x2, colvo);
-        printf("Expected: x1 = %g, x2 = %g, colvo = %d\n", test->x1exp, test->x2exp, test->colvoexp);
+bool RunTest(UnitTest test) {
+    struct Roots testroots = {0, 0, 0};
+    SolveQuad(test.abc, &testroots);
+    if (!(abs(testroots.nRoots - test.sol.nRoots) < EPS) or !(fabs(testroots.x1 - test.sol.x1) < EPS) or !(fabs(testroots.x2 - test.sol.x2) < EPS)) {
+        printf("ErrorTest %d: a = %g, b = %g, c = %g, x1 = %g, x2 = %g, nRoots = %d\n", test.numtest, test.abc.a, test.abc.b, test.abc.c, testroots.x1, testroots.x2, testroots.nRoots);
+        printf("Expected: x1 = %g, x2 = %g, nRoots = %d\n", test.sol.x1, test.sol.x2, test.sol.nRoots);
         return false;
     }
     return true;
 }
 
-bool RunAllTests(UnitTest* test1, UnitTest* test2, UnitTest* test3, UnitTest* test4, UnitTest* test5, UnitTest* test6, UnitTest* test7, UnitTest* test8, UnitTest* test9, UnitTest* test10) {
+bool RunAllTests(UnitTest test1, UnitTest test2, UnitTest test3,
+                 UnitTest test4, UnitTest test5, UnitTest test6,
+                 UnitTest test7, UnitTest test8, UnitTest test9,
+                 UnitTest test10, UnitTest test11, UnitTest test12) {
     if (!RunTest(test1)) return false;
     if (!RunTest(test2)) return false;
     if (!RunTest(test3)) return false;
@@ -166,5 +181,7 @@ bool RunAllTests(UnitTest* test1, UnitTest* test2, UnitTest* test3, UnitTest* te
     if (!RunTest(test8)) return false;
     if (!RunTest(test9)) return false;
     if (!RunTest(test10)) return false;
+    if (!RunTest(test11)) return false;
+    if (!RunTest(test12)) return false;
     return true;
 }
