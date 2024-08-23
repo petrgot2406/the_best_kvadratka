@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <math.h>
 #include <TXLib.h>
 
@@ -12,7 +11,6 @@ struct Roots {
 };
 
 struct UnitTest {
-    int numtest;
     Coeffs abc;
     Roots sol;
 };
@@ -25,32 +23,15 @@ bool SpaceBeforeEndl();
 float Discriminant(Coeffs abc);
 bool IsClose(float x, float y);
 void SolveQuad(Coeffs abc, Roots *sol);
-void SolveLinear(float b, float c, int* nRoots, float* x1);
+void SolveLinear(float b, float c, int* nRoots, float* x1, float* x2);
 void AnswerOutput(Roots sol);
-bool RunTest(UnitTest);
-bool RunAllTests(UnitTest test1, UnitTest test2, UnitTest test3,
-                 UnitTest test4, UnitTest test5, UnitTest test6,
-                 UnitTest test7, UnitTest test8, UnitTest test9,
-                 UnitTest test10, UnitTest test11, UnitTest test12);
+bool RunTest(int numtest, UnitTest test);
+bool RunAllTests();
 
 int main() {
     struct Coeffs abc = {0, 0, 0};
     struct Roots sol = {0, 0, 0};
-    struct UnitTest test1 = {1, {0, 0, 0}, {0, 0, INF_NUM_OF_ROOTS}};
-    struct UnitTest test2 = {2, {1, 1, 1}, {0, 0, 0}};
-    struct UnitTest test3 = {3, {0, 1, 1}, {-1, 0, 1}};
-    struct UnitTest test4 = {4, {1, 0, -4}, {-2, 2, 2}};
-    struct UnitTest test5 = {5, {1, 1, -12}, {-4, 3, 2}};
-    struct UnitTest test6 = {6, {0, 0, 7}, {0, 0, 0}};
-    struct UnitTest test7 = {7, {1, 1, -2}, {-2, 1, 2}};
-    struct UnitTest test8 = {8, {0, 4, -4}, {1, 0, 1}};
-    struct UnitTest test9 = {9, {1, 1, 0}, {-1, 0, 2}};
-    struct UnitTest test10 = {10, {1, 0, 0}, {0, 0, 1}};
-    struct UnitTest test11 = {11, {1, 1, 0.25}, {-0.5, 0, 1}};
-    struct UnitTest test12 = {12, {1, 1, -12}, {-4, 3, 2}};
-    if (RunAllTests(test1, test2, test3, test4,
-                    test5, test6, test7, test8,
-                    test9, test10, test11, test12)) {
+    if (RunAllTests()) {
         printf("All tests are passed\n");
     }
     printf("Введите a, b, c: ");
@@ -104,7 +85,7 @@ void SolveQuad(Coeffs abc, Roots *sol) {
     assert(&sol->x1 != NULL);
     assert(&sol->x2 != NULL);
     if (IsClose(abc.a, 0)) {
-        SolveLinear(abc.b, abc.c, &sol->nRoots, &sol->x1);
+        SolveLinear(abc.b, abc.c, &sol->nRoots, &sol->x1, &sol->x2);
     } else {
         float D = 0;
         D = Discriminant(abc);
@@ -113,6 +94,7 @@ void SolveQuad(Coeffs abc, Roots *sol) {
         } else {
             if (IsClose(D, 0)) {
                 sol->x1 = - abc.b / (2 * abc.a);
+                sol->x2 = - abc.b / (2 * abc.a);
                 sol->nRoots = 1;
             } else {
                 sol->x1 = (- abc.b - sqrtf(D)) / (2 * abc.a);
@@ -123,7 +105,9 @@ void SolveQuad(Coeffs abc, Roots *sol) {
     }
 }
 
-void SolveLinear(float b, float c, int* nRoots, float* x1) {
+void SolveLinear(float b, float c, int* nRoots, float* x1, float* x2) {
+    assert(nRoots != NULL);
+    assert(x1 != NULL);
     assert(x1 != NULL);
     if (IsClose(b, 0)) {
         if (IsClose(c, 0)) {
@@ -134,8 +118,10 @@ void SolveLinear(float b, float c, int* nRoots, float* x1) {
     } else {
         *nRoots = 1;
         *x1 = - c / b;
+        *x2 = - c / b;
         if (IsClose(*x1, 0)) {
             *x1 = 0;
+            *x2 = 0;
         }
     }
 }
@@ -156,32 +142,64 @@ void AnswerOutput(Roots sol) {
     }
 }
 
-bool RunTest(UnitTest test) {
+bool RunTest(int i, UnitTest test) {
+    bool succ = true;
     struct Roots testroots = {0, 0, 0};
     SolveQuad(test.abc, &testroots);
-    if (!(abs(testroots.nRoots - test.sol.nRoots) < EPS) or !(fabs(testroots.x1 - test.sol.x1) < EPS) or !(fabs(testroots.x2 - test.sol.x2) < EPS)) {
-        printf("ErrorTest %d: a = %g, b = %g, c = %g, x1 = %g, x2 = %g, nRoots = %d\n", test.numtest, test.abc.a, test.abc.b, test.abc.c, testroots.x1, testroots.x2, testroots.nRoots);
+    if (abs(testroots.nRoots - test.sol.nRoots) < EPS) {
+        switch(testroots.nRoots) {
+            case INF_NUM_OF_ROOTS: if (IsClose(testroots.x1, 0) && IsClose(testroots.x2, 0)) {
+                                        return true;
+                                   } else {
+                                        succ = false;
+                                   }
+            case 0: if (IsClose(testroots.x1, 0) && IsClose(testroots.x2, 0)) {
+                        return true;
+                    } else {
+                        succ =  false;
+                    }
+            case 1: if ((fabs(testroots.x1 - test.sol.x1) < EPS) && (fabs(testroots.x2 - test.sol.x2) < EPS)) {
+                        return true;
+                    } else {
+                        succ = false;
+                    }
+            case 2: if (((fabs(testroots.x1 - test.sol.x1) < EPS) && (fabs(testroots.x2 - test.sol.x2) < EPS)) || ((fabs(testroots.x1 - test.sol.x2) < EPS) && (fabs(testroots.x2 - test.sol.x1) < EPS))) {
+                        return true;
+                    } else {
+                        succ = false;
+                    }
+            default: printf("Error: Coeffs are incorrect\n");
+                     succ = false;
+                     break;
+        }
+    } else {
+        succ = false;
+    }
+    if (!succ) {
+        printf("ErrorTest %d: a = %g, b = %g, c = %g, x1 = %g, x2 = %g, nRoots = %d\n", i + 1, test.abc.a, test.abc.b, test.abc.c, testroots.x1, testroots.x2, testroots.nRoots);
         printf("Expected: x1 = %g, x2 = %g, nRoots = %d\n", test.sol.x1, test.sol.x2, test.sol.nRoots);
         return false;
     }
-    return true;
+    return false;
 }
 
-bool RunAllTests(UnitTest test1, UnitTest test2, UnitTest test3,
-                 UnitTest test4, UnitTest test5, UnitTest test6,
-                 UnitTest test7, UnitTest test8, UnitTest test9,
-                 UnitTest test10, UnitTest test11, UnitTest test12) {
-    if (!RunTest(test1)) return false;
-    if (!RunTest(test2)) return false;
-    if (!RunTest(test3)) return false;
-    if (!RunTest(test4)) return false;
-    if (!RunTest(test5)) return false;
-    if (!RunTest(test6)) return false;
-    if (!RunTest(test7)) return false;
-    if (!RunTest(test8)) return false;
-    if (!RunTest(test9)) return false;
-    if (!RunTest(test10)) return false;
-    if (!RunTest(test11)) return false;
-    if (!RunTest(test12)) return false;
+bool RunAllTests() {
+    const int numtests = 11;
+    struct UnitTest test[numtests] = {{{0, 0, 0}, {0, 0, INF_NUM_OF_ROOTS}},
+                                      {{1, 1, 1}, {0, 0, 0}},
+                                      {{0, 1, 1}, {-1, -1, 1}},
+                                      {{1, 0, -4}, {-2, 2, 2}},
+                                      {{1, 1, -12}, {-4, 3, 2}},
+                                      {{0, 0, 7}, {0, 0, 0}},
+                                      {{1, 1, -2}, {-2, 1, 2}},
+                                      {{0, 4, -4}, {1, 1, 1}},
+                                      {{1, 0, 0}, {0, 0, 1}},
+                                      {{1, 1, 0.25}, {-0.5, -0.5, 1}},
+                                      {{1, 1, -12}, {3, -4, 2}}};
+    for (int i = 0; i < numtests; i++) {
+        if (!RunTest(i, test[i])) {
+            return false;
+        }
+    }
     return true;
 }
