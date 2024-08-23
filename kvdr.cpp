@@ -1,14 +1,41 @@
+/*!
+\file
+\brief Заголовочный файл с описанием классов
+Данный файл содержит в себе определения основных
+классов, используемых в демонстрационной программе
+*/
+
 #include <math.h>
 #include <TXLib.h>
+
+/**
+* @brief   Структура коэффициентов
+* @param a Главный коэффициент уравнения
+* @param b Второй коэффициент уравнения
+* @param c Свободный член уравнения
+*/
 
 struct Coeffs {
     float a, b, c;
 };
 
+/**
+* @brief        Структура решений уравнения
+* @param x1     Первый корень уравнения
+* @param x2     Второй корень уравнения
+* @param nRoots Количество корней уравнения
+*/
+
 struct Roots {
     float x1, x2;
     int nRoots;
 };
+
+/**
+* @brief            Структура тестовых коэффициентов и ожидаемых результатов
+* @param Coeffs abc Тестовые коэффициенты
+* @param Roots sol  Ожидаемые результаты
+*/
 
 struct UnitTest {
     Coeffs abc;
@@ -44,6 +71,12 @@ int main() {
     return 0;
 }
 
+/**
+* @brief             Функция ввода коэффициентов
+* @param Coeffs *abc Вводимые коэффициенты
+* @return            Корректность полученных данных
+*/
+
 bool InputABC(Coeffs *abc) {
     assert(&abc->a != NULL);
     assert(&abc->b != NULL);
@@ -60,6 +93,11 @@ bool InputABC(Coeffs *abc) {
     return true;
 }
 
+/**
+* @brief  Функция проверки наличия пробелов перед концом ввода
+* @return Наличие пробелов перед концом ввода
+*/
+
 bool SpaceBeforeEndl() {
     int symbol = 0;
     while ((symbol = getchar()) != '\n' && symbol != EOF) {
@@ -70,9 +108,22 @@ bool SpaceBeforeEndl() {
     return true;
 }
 
+/**
+* @brief             Функция рассчёта дискриминанта
+* @param Coeffs abc  Коэффициенты
+* @return            Дискриминант
+*/
+
 float Discriminant(Coeffs abc) {
     return abc.b * abc.b - 4 * abc.a * abc.c;
 }
+
+/**
+* @brief   Функция проверки равенство двух действительных чисел
+* @param x Первое действительное число
+* @param y Второе действительное число
+* @return  Равенство данных чисел
+*/
 
 bool IsClose(float x, float y) {
     if (fabs(x - y) < EPS) {
@@ -80,6 +131,12 @@ bool IsClose(float x, float y) {
     }
     return false;
 }
+
+/**
+* @brief            Функция решения квадраного уравнения
+* @param Coeffs abc Коэффициенты уравнения
+* @param Roots *sol Корни уравнения и их количество
+*/
 
 void SolveQuad(Coeffs abc, Roots *sol) {
     assert(&sol->x1 != NULL);
@@ -105,6 +162,15 @@ void SolveQuad(Coeffs abc, Roots *sol) {
     }
 }
 
+/**
+* @brief         Функция решения линейного уравнения
+* @param b       Старший коэффициент уравнения
+* @param c       Свободный член уравнения
+* @param *nRoots Количество корней уравнения
+* @param *x1     Корень уравнения
+* @param *x2     Корень уравнения
+*/
+
 void SolveLinear(float b, float c, int* nRoots, float* x1, float* x2) {
     assert(nRoots != NULL);
     assert(x1 != NULL);
@@ -126,6 +192,11 @@ void SolveLinear(float b, float c, int* nRoots, float* x1, float* x2) {
     }
 }
 
+/**
+* @brief           Функция вывода решений уравнения
+* @param Roots sol Корни уравнения и их количество
+*/
+
 void AnswerOutput(Roots sol) {
     switch(sol.nRoots) {
         case 0: printf("нет решений");
@@ -141,6 +212,13 @@ void AnswerOutput(Roots sol) {
                  break;
     }
 }
+
+/**
+* @brief               Функция прохождения теста
+* @param i             Номер теста
+* @param UnitTest test Тестовые коэффициенты и ожидаемые значения
+* @return              Успешность прохождения теста
+*/
 
 bool RunTest(int i, UnitTest test) {
     bool succ = true;
@@ -182,6 +260,11 @@ bool RunTest(int i, UnitTest test) {
     }
     return false;
 }
+
+/**
+* @brief  Функция прохождения всех тестов
+* @return Успешность прохождения всех тестов
+*/
 
 bool RunAllTests() {
     const int numtests = 11;
