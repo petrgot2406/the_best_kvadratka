@@ -1,8 +1,0 @@
-#include <stdio.h>
-#include <math.h>
-#include <TXLib.h>
-#include "OutputSolutions.h"
-#include "SolverQuadro.h"
-
-
-

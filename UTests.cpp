@@ -72,6 +72,7 @@ bool RunTest(int i, UnitTest test)
 bool RunAllTests(void)
 {
     const int numtests = 11;
+    bool totalsuccess = true;
     struct UnitTest test[numtests] = {{{0, 0, 0}, {0, 0, INF_NUM_OF_ROOTS}},
                                       {{1, 1, 1}, {0, 0, 0}},
                                       {{0, 1, 1}, {-1, -1, 1}},
@@ -87,8 +88,12 @@ bool RunAllTests(void)
     {
         if (!RunTest(i, test[i]))
         {
-            return false;
+            totalsuccess = false;
         }
     }
-    return true;
+    if (totalsuccess)
+    {
+        return true;
+    }
+    return false;
 }

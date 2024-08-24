@@ -20,9 +20,10 @@ int main()
     if (RunAllTests())
     {
         printf("All tests are passed\n");
+    } else
+    {
+        return 1;
     }
-    printf("¬ведите a, b, c: ");
-
     if (!InputABC(&abc))
     {
         return 1;

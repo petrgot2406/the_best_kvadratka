@@ -44,6 +44,7 @@ void SolveLinear(float b, float c, int* nRoots, float* x1, float* x2)
     assert(nRoots != NULL);
     assert(x1 != NULL);
     assert(x1 != NULL);
+
     if (IsClose(b, 0))
     {
         if (IsClose(c, 0))
