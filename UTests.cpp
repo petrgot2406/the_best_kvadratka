@@ -37,7 +37,8 @@ bool RunTest(int i, UnitTest test)
             case 1: if ((fabs(testroots.x1 - test.sol.x1) < EPS) && (fabs(testroots.x2 - test.sol.x2) < EPS))
                     {
                         return true;
-                    } else {
+                    } else
+                    {
                         succ = false;
                     }
             case 2: if (((fabs(testroots.x1 - test.sol.x1) < EPS) && (fabs(testroots.x2 - test.sol.x2) < EPS)) || ((fabs(testroots.x1 - test.sol.x2) < EPS) && (fabs(testroots.x2 - test.sol.x1) < EPS)))
