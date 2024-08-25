@@ -17,18 +17,31 @@ int main()
 {
     struct Coeffs abc = {0, 0, 0};
     struct Roots sol = {0, 0, 0};
-    if (RunAllTests())
+    printf("¬ведите 1, чтобы запустить тесты\n");
+    printf("¬ведите 2, чтобы решить квадратное уравнение\n");
+    int selection = 0;
+    scanf("%d", &selection);
+    switch(selection)
     {
-        printf("All tests are passed\n");
-    } else
-    {
-        return 1;
+        case 1: if (RunAllTests())
+                {
+                    printf("All tests are passed\n");
+                    break;
+                } else
+                {
+                    return 1;
+                }
+        case 2: if (!InputABC(&abc))
+                {
+                    return 1;
+                } else
+                {
+                    SolveQuad(abc, &sol);
+                    AnswerOutput(sol);
+                    break;
+                }
+        default: printf("ќшибка ввода данных\n");
+                 return 1;
     }
-    if (!InputABC(&abc))
-    {
-        return 1;
-    }
-    SolveQuad(abc, &sol);
-    AnswerOutput(sol);
     return 0;
 }
