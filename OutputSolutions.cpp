@@ -13,13 +13,13 @@ void AnswerOutput(Roots sol)
 {
     switch(sol.nRoots)
     {
-        case 0: printf("нет решений");
+        case 0: printf("пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
                 break;
         case 1: printf("x = %g", sol.x1);
                 break;
         case 2: printf("x1 = %g, x2 = %g", sol.x1, sol.x2);
                 break;
-        case INF_NUM_OF_ROOTS: printf("любое число");
+        case INF_NUM_OF_ROOTS: printf("пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
                                break;
 
         default: printf("ERROR: Incorrect number of roots");

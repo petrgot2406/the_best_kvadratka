@@ -16,17 +16,17 @@ bool InputABC(Coeffs *abc)
     assert(&abc->b != NULL);
     assert(&abc->c != NULL);
 
-    printf("Введите a, b, c: ");
+    printf("пїЅпїЅпїЅпїЅпїЅпїЅпїЅ a, b, c: ");
     int symbol = 0;
     while (scanf("%f %f %f", &abc->a, &abc->b, &abc->c) != 3 || !SpaceBeforeEndl())
     {
         if (getchar() == EOF || getchar() == '\n')
         {
-            printf("Недостаточно данных!");
+            printf("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ!");
             return false;
         }
         while ((symbol = getchar()) != '\n' || symbol != EOF || symbol == ' ') {}
-        printf("Введите ещё раз\n");
+        printf("пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ\n");
     }
     return true;
 }
