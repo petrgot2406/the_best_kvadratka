@@ -7,6 +7,7 @@
 
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
 #include <TXLib.h>
 #include "SolverQuadro.h"
@@ -16,8 +17,8 @@
 
 int main()
 {
-    struct Coeffs abc = {0, 0, 0};
-    struct Roots sol = {0, 0, 0};
+    struct Coeffs abc = {};
+    struct Roots sol = {};
     printf("¬ведите 1, чтобы запустить тесты\n");
     printf("¬ведите 2, чтобы решить квадратное уравнение\n");
     int selection = 0;
@@ -30,11 +31,11 @@ int main()
                     break;
                 } else
                 {
-                    return 1;
+                    return EXIT_FAILURE;
                 }
         case 2: if (!InputABC(&abc))
                 {
-                    return 1;
+                    return EXIT_FAILURE;
                 } else
                 {
                     SolveQuad(abc, &sol);
@@ -42,7 +43,7 @@ int main()
                     break;
                 }
         default: printf("ќшибка ввода данных\n");
-                 return 1;
+                 return EXIT_FAILURE;
     }
     return 0;
 }

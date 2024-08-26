@@ -1,6 +1,8 @@
 /*!
 \file
-\brief Файл решения уравнения
+\brief Заголовочный файл с описанием классов
+Данный файл содержит в себе определения основных
+классов, используемых в демонстрационной программе
 */
 
 #include <stdio.h>
@@ -82,8 +84,6 @@ void SolveQuad(Coeffs abc, Roots *sol)
 {
     assert(&sol->x1 != NULL);
     assert(&sol->x2 != NULL);
-    assert(&sol->nRoots != NULL);
-
     if (IsClose(abc.a, 0))
     {
         SolveLinear(abc.b, abc.c, &sol->nRoots, &sol->x1, &sol->x2);

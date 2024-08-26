@@ -16,6 +16,10 @@
 
 void AnswerOutput(Roots sol)
 {
+    assert(&sol->x1 != NULL && &sol->x1 != NAN && &sol->x1 != INFINITY);
+    assert(&sol->x2 != NULL && &sol->x2 != NAN && &sol->x2!= INFINITY);
+    assert(&sol->uTests != NULL && &sol->x1 != NAN && &sol->x1 != INFINITY);
+
     switch(sol.nRoots)
     {
         case 0: printf("нет решений");

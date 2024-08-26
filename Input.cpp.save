@@ -1,4 +1,9 @@
-#include <stdio.h>
+/*!
+\file
+\brief Файл ввода коэффициентов
+*/
+
+#include <stdio.h>                
 #include <math.h>
 #include <TXLib.h>
 #include "SolverQuadro.h"
@@ -26,7 +31,7 @@ bool InputABC(Coeffs *abc)
             return false;
         }
         while ((symbol = getchar()) != '\n' || symbol != EOF || symbol == ' ') {}
-        printf("Введ\n");
+        printf("Введите ещё раз\n");
     }
     return true;
 }

@@ -1,0 +1,14 @@
+/*!
+\file
+\brief Заголовочный файл с описанием классов
+Данный файл содержит в себе определения основных
+классов, используемых в демонстрационной программе
+*/
+
+#ifndef OUTPUTSOLUTIONS_H
+#define OUTPUTSOLUTIONS_H
+#include "SolverQuadro.h"
+
+void AnswerOutput(Roots sol);
+
+#endif

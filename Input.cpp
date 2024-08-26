@@ -1,3 +1,8 @@
+/*!
+\file
+\brief Файл ввода коэффициентов
+*/
+
 #include <stdio.h>
 #include <math.h>
 #include <TXLib.h>

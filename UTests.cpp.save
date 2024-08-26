@@ -20,7 +20,7 @@
 bool RunTest(int i, UnitTest test)
 {
     bool succ = true;
-    struct Roots testroots = {0, 0, 0};
+    struct Roots testroots = {};
     SolveQuad(test.abc, &testroots);
     if (abs(testroots.nRoots - test.sol.nRoots) < EPS)
     {
@@ -28,7 +28,6 @@ bool RunTest(int i, UnitTest test)
         {
             case INF_NUM_OF_ROOTS: if (IsClose(testroots.x1, 0) && IsClose(testroots.x2, 0))
                                    {
-                                        printf("Test %d is passed\n", i + 1);
                                         return true;
                                    } else
                                    {
@@ -36,7 +35,6 @@ bool RunTest(int i, UnitTest test)
                                    }
             case 0: if (IsClose(testroots.x1, 0) && IsClose(testroots.x2, 0))
                     {
-                        printf("Test %d is passed\n", i + 1);
                         return true;
                     } else
                     {
@@ -44,7 +42,6 @@ bool RunTest(int i, UnitTest test)
                     }
             case 1: if ((fabs(testroots.x1 - test.sol.x1) < EPS) && (fabs(testroots.x2 - test.sol.x2) < EPS))
                     {
-                        printf("Test %d is passed\n", i + 1);
                         return true;
                     } else
                     {
@@ -52,7 +49,6 @@ bool RunTest(int i, UnitTest test)
                     }
             case 2: if (((fabs(testroots.x1 - test.sol.x1) < EPS) && (fabs(testroots.x2 - test.sol.x2) < EPS)) || ((fabs(testroots.x1 - test.sol.x2) < EPS) && (fabs(testroots.x2 - test.sol.x1) < EPS)))
                     {
-                        printf("Test %d is passed\n", i + 1);
                         return true;
                     } else
                     {
@@ -83,14 +79,14 @@ bool RunTest(int i, UnitTest test)
 bool RunAllTests(void)
 {
     bool totalsuccess = true;
-    struct UnitTest test[] = {{{0, 0, 0}, {0, 0, INF_NUM_OF_ROOTS}},
-                              {{1, 1, 1}, {0, 0, 0}},
-                              {{0, 1, 1}, {-1, -1, 1}},
-                              {{1, 0, -4}, {-2, 2, 2}},
+    struct UnitTest test[] = {{{0, 0,   0}, { 0, 0, INF_NUM_OF_ROOTS}},
+                              {{1, 1,   1}, { 0, 0, 0}},
+                              {{0, 1,   1}, {-1, -1, 1}},
+                              {{1, 0,  -4}, {-2, 2, 2}},
                               {{1, 1, -12}, {-4, 3, 2}},
-                              {{0, 0, 7}, {0, 0, 0}},
-                              {{1, 1, -2}, {-2, 1, 2}},
-                              {{0, 4, -4}, {1, 1, 1}},
+                              {{0, 0,   7}, {0, 0, 0}},
+                              {{1, 1,  -2}, {-2, 1, 2}},
+                              {{0, 4,  -4}, {1, 1, 1}},
                               {{1, 0, 0}, {0, 0, 1}},
                               {{1, 1, 0.25}, {-0.5, -0.5, 1}},
                               {{1, 1, -12}, {3, -4, 2}}};

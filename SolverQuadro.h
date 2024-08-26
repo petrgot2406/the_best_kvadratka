@@ -1,3 +1,8 @@
+/*!
+\file
+\brief Заголовочный файл решения уравнения
+*/
+
 #ifndef SOLVERQUADRO_H
 #define SOLVERQUADRO_H
 
@@ -6,38 +11,33 @@ const int INF_NUM_OF_ROOTS = -1;
 
 /**
 * @brief   Структура коэффициентов
-* @param a Главный коэффициент уравнения
-* @param b Второй коэффициент уравнения
-* @param c Свободный член уравнения
 */
 
 struct Coeffs {
-    float a, b, c;
+    float a; ///< Главный коэффициент уравнения
+    float b; ///< Второй коэффициент уравнения
+    float c; ///< Свободный член уравнения
 };
 
 /**
 * @brief        Структура решений уравнения
-* @param x1     Первый корень уравнения
-* @param x2     Второй корень уравнения
-* @param nRoots Количество корней уравнения
 */
 
 struct Roots
 {
-    float x1, x2;
-    int nRoots;
+    float x1;   ///< Первый корень уравнения
+    float x2;   ///< Второй корень уравнения
+    int nRoots; ///< Количество корней уравнения
 };
 
 /**
 * @brief            Структура тестовых коэффициентов и ожидаемых результатов
-* @param Coeffs abc Тестовые коэффициенты
-* @param Roots sol  Ожидаемые результаты
 */
 
 struct UnitTest
 {
-    Coeffs abc;
-    Roots sol;
+    Coeffs abc; ///< Тестовые коэффициенты
+    Roots sol;  ///< Ожидаемые результаты
 };
 
 bool IsClose(float x, float y);
