@@ -27,7 +27,9 @@ bool InputABC(Coeffs *abc)
     {
         if (getchar() == EOF || getchar() == '\n')
         {
+            txSetConsoleAttr (FOREGROUND_RED | BACKGROUND_BLACK);
             printf("Недостаточно данных!\n");
+            txSetConsoleAttr (FOREGROUND_WHITE | BACKGROUND_BLACK);
             return false;
         }
         while ((symbol = getchar()) != '\n' || symbol != EOF || symbol == ' ') {}

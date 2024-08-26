@@ -28,7 +28,9 @@ bool RunTest(int i, UnitTest test)
         {
             case INF_NUM_OF_ROOTS: if (IsClose(testroots.x1, 0) && IsClose(testroots.x2, 0))
                                    {
+                                        txSetConsoleAttr (FOREGROUND_GREEN | BACKGROUND_BLACK);
                                         printf("Test %d is passed\n", i + 1);
+                                        txSetConsoleAttr (FOREGROUND_WHITE | BACKGROUND_BLACK);
                                         return true;
                                    } else
                                    {
@@ -36,7 +38,9 @@ bool RunTest(int i, UnitTest test)
                                    }
             case 0: if (IsClose(testroots.x1, 0) && IsClose(testroots.x2, 0))
                     {
+                        txSetConsoleAttr (FOREGROUND_GREEN | BACKGROUND_BLACK);
                         printf("Test %d is passed\n", i + 1);
+                        txSetConsoleAttr (FOREGROUND_WHITE | BACKGROUND_BLACK);
                         return true;
                     } else
                     {
@@ -44,7 +48,9 @@ bool RunTest(int i, UnitTest test)
                     }
             case 1: if ((fabs(testroots.x1 - test.sol.x1) < EPS) && (fabs(testroots.x2 - test.sol.x2) < EPS))
                     {
+                        txSetConsoleAttr (FOREGROUND_GREEN | BACKGROUND_BLACK);
                         printf("Test %d is passed\n", i + 1);
+                        txSetConsoleAttr (FOREGROUND_WHITE | BACKGROUND_BLACK);
                         return true;
                     } else
                     {
@@ -52,7 +58,9 @@ bool RunTest(int i, UnitTest test)
                     }
             case 2: if (((fabs(testroots.x1 - test.sol.x1) < EPS) && (fabs(testroots.x2 - test.sol.x2) < EPS)) || ((fabs(testroots.x1 - test.sol.x2) < EPS) && (fabs(testroots.x2 - test.sol.x1) < EPS)))
                     {
+                        txSetConsoleAttr (FOREGROUND_GREEN | BACKGROUND_BLACK);
                         printf("Test %d is passed\n", i + 1);
+                        txSetConsoleAttr (FOREGROUND_WHITE | BACKGROUND_BLACK);
                         return true;
                     } else
                     {
@@ -68,8 +76,10 @@ bool RunTest(int i, UnitTest test)
     }
     if (!succ)
     {
+        txSetConsoleAttr (FOREGROUND_RED | BACKGROUND_BLACK);
         printf("ErrorTest %d: a = %g, b = %g, c = %g, x1 = %g, x2 = %g, nRoots = %d\n", i + 1, test.abc.a, test.abc.b, test.abc.c, testroots.x1, testroots.x2, testroots.nRoots);
         printf("Expected: x1 = %g, x2 = %g, nRoots = %d\n", test.sol.x1, test.sol.x2, test.sol.nRoots);
+        txSetConsoleAttr (FOREGROUND_WHITE | BACKGROUND_BLACK);
         return false;
     }
     return false;

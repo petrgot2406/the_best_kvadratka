@@ -27,7 +27,9 @@ void AnswerOutput(Roots sol)
         case INF_NUM_OF_ROOTS: printf("любое число");
                                break;
 
-        default: printf("ERROR: Incorrect number of roots");
+        default: txSetConsoleAttr (FOREGROUND_RED | BACKGROUND_BLACK);
+                 printf("ERROR: Incorrect number of roots");
+                 txSetConsoleAttr (FOREGROUND_WHITE | BACKGROUND_BLACK);
                  break;
     }
 }

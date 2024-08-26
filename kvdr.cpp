@@ -27,7 +27,9 @@ int main()
     {
         case 1: if (RunAllTests())
                 {
+                    txSetConsoleAttr (FOREGROUND_GREEN | BACKGROUND_BLACK);
                     printf("All tests are passed\n");
+                    txSetConsoleAttr (FOREGROUND_WHITE | BACKGROUND_BLACK);
                     break;
                 } else
                 {
@@ -42,7 +44,9 @@ int main()
                     AnswerOutput(sol);
                     break;
                 }
-        default: printf("Ошибка ввода данных\n");
+        default: txSetConsoleAttr (FOREGROUND_RED | BACKGROUND_BLACK);
+                 printf("Ошибка ввода данных\n");
+                 txSetConsoleAttr (FOREGROUND_WHITE | BACKGROUND_BLACK);
                  return EXIT_FAILURE;
     }
     return 0;
