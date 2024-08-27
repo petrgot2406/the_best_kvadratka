@@ -8,6 +8,6 @@
 #include "SolverQuadro.h"
 
 bool InputABC(Coeffs *abc);
-bool SpaceBeforeEndl();
+bool CheckSpaceBeforeEndl();
 
 #endif

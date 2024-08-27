@@ -23,7 +23,7 @@ bool InputABC(Coeffs *abc)
 
     printf("Введите a, b, c: ");
     int symbol = 0;
-    while (scanf("%f %f %f", &abc->a, &abc->b, &abc->c) != 3 || !SpaceBeforeEndl())
+    while (scanf("%f %f %f", &abc->a, &abc->b, &abc->c) != 3 || !CheckSpaceBeforeEndl())
     {
         if (getchar() == EOF || getchar() == '\n')
         {
@@ -32,7 +32,7 @@ bool InputABC(Coeffs *abc)
             txSetConsoleAttr (FOREGROUND_WHITE | BACKGROUND_BLACK);
             return false;
         }
-        while ((symbol = getchar()) != '\n' || symbol != EOF || symbol == ' ') {}
+        while ((symbol = getchar()) != '\n' || symbol != EOF) {}
         printf("Введите ещё раз\n");
     }
     return true;
@@ -43,7 +43,7 @@ bool InputABC(Coeffs *abc)
 * @return Наличие пробелов перед концом ввода
 */
 
-bool SpaceBeforeEndl()
+bool CheckSpaceBeforeEndl()
 {
     int symbol = 0;
     while ((symbol = getchar()) != '\n' && symbol != EOF)

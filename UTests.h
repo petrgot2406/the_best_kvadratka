@@ -9,6 +9,6 @@
 #include "SolverQuadro.h"
 
 bool RunTest(int numtest, UnitTest test);
-bool RunAllTests(void);
+bool RunAllTests();
 
 #endif
