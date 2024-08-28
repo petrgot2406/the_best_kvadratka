@@ -18,17 +18,17 @@ void AnswerOutput(Roots sol)
 {
     switch(sol.nRoots)
     {
-        case 0: printf("нет решений");
+        case 0: printf("нет решений\n");
                 break;
-        case 1: printf("x = %g", sol.x1);
+        case 1: printf("x = %g\n", sol.x1);
                 break;
-        case 2: printf("x1 = %g, x2 = %g", sol.x1, sol.x2);
+        case 2: printf("x1 = %g, x2 = %g\n", sol.x1, sol.x2);
                 break;
-        case INF_NUM_OF_ROOTS: printf("любое число");
+        case INF_NUM_OF_ROOTS: printf("любое число\n");
                                break;
 
         default: txSetConsoleAttr (FOREGROUND_RED | BACKGROUND_BLACK);
-                 printf("ERROR: Incorrect number of roots");
+                 printf("ERROR: Incorrect number of roots\n");
                  txSetConsoleAttr (FOREGROUND_WHITE | BACKGROUND_BLACK);
                  break;
     }

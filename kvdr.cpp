@@ -21,6 +21,7 @@ int main()
     struct Roots sol = {};
     printf("¬ведите 1, чтобы запустить тесты\n");
     printf("¬ведите 2, чтобы решить квадратное уравнение\n");
+    printf("¬ведите 3, чтобы выйти из программы\n");
     int selection = 0;
     scanf("%d", &selection);
     switch(selection)
@@ -30,24 +31,30 @@ int main()
                     txSetConsoleAttr (FOREGROUND_GREEN | BACKGROUND_BLACK);
                     printf("All tests are passed\n");
                     txSetConsoleAttr (FOREGROUND_WHITE | BACKGROUND_BLACK);
+                    main();
                     break;
                 } else
                 {
                     return EXIT_FAILURE;
+                    main();
                 }
         case 2: if (!InputABC(&abc))
                 {
                     return EXIT_FAILURE;
+                    main();
                 } else
                 {
                     SolveQuad(abc, &sol);
                     AnswerOutput(sol);
+                    main();
                     break;
                 }
+        case 3: return 0;
         default: txSetConsoleAttr (FOREGROUND_RED | BACKGROUND_BLACK);
                  printf("ќшибка ввода данных\n");
                  txSetConsoleAttr (FOREGROUND_WHITE | BACKGROUND_BLACK);
-                 return EXIT_FAILURE;
+                 main();
+                 break;
     }
     return 0;
 }
