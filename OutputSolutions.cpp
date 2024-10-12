@@ -1,18 +1,8 @@
-/*!
-\file
-\brief  Файл вывода решений квадратного уравнения
-*/
-
 #include <stdio.h>
 #include <math.h>
 #include <TXLib.h>
 #include "OutputSolutions.h"
 #include "SolverQuadro.h"
-
-/**
-* @brief           Функция вывода решений уравнения
-* @param Roots sol Корни уравнения и их количество
-*/
 
 void AnswerOutput(Roots sol)
 {

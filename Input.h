@@ -1,8 +1,3 @@
-/*!
-\file
-\brief Заголовочный файл ввода коэффициентов
-*/
-
 #ifndef INPUT_H
 #define INPUT_H
 #include "SolverQuadro.h"

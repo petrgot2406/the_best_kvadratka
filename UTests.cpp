@@ -1,21 +1,8 @@
-/*!
-\file
-\brief Файл прохождения тестов
-*/
-
-
 #include <stdio.h>
 #include <math.h>
 #include <TXLib.h>
 #include "SolverQuadro.h"
 #include "UTests.h"
-
-/**
-* @brief               Функция прохождения теста
-* @param i             Номер теста
-* @param UnitTest test Тестовые коэффициенты и ожидаемые значения
-* @return              Успешность прохождения теста
-*/
 
 bool RunTest(int i, UnitTest test)
 {
@@ -86,11 +73,6 @@ bool RunTest(int i, UnitTest test)
     }
     return false;
 }
-
-/**
-* @brief  Функция прохождения всех тестов
-* @return Успешность прохождения всех тестов
-*/
 
 bool RunAllTests(void)
 {

@@ -1,9 +1,3 @@
-/*!
-\file
-\brief Заголовочный файл прохождения тестов
-*/
-
-
 #ifndef UTESTS_H
 #define UTESTS_H
 #include "SolverQuadro.h"

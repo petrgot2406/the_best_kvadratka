@@ -1,19 +1,7 @@
-/*!
-\file
-\brief Файл решения уравнения
-*/
-
 #include <stdio.h>
 #include <math.h>
 #include <TXLib.h>
 #include "SolverQuadro.h"
-
-/**
-* @brief   Функция проверки равенства двух действительных чисел
-* @param x Первое действительное число
-* @param y Второе действительное число
-* @return  Равенство данных чисел
-*/
 
 bool IsClose(float x, float y)
 {
@@ -24,25 +12,10 @@ bool IsClose(float x, float y)
     return false;
 }
 
-/**
-* @brief             Функция рассчёта дискриминанта
-* @param Coeffs abc  Коэффициенты
-* @return            Дискриминант
-*/
-
 float Discriminant(Coeffs abc)
 {
     return abc.b * abc.b - 4 * abc.a * abc.c;
 }
-
-/**
-* @brief         Функция решения линейного уравнения
-* @param b       Старший коэффициент уравнения
-* @param c       Свободный член уравнения
-* @param *nRoots Количество корней уравнения
-* @param *x1     Корень уравнения
-* @param *x2     Корень уравнения
-*/
 
 void SolveLinear(float b, float c, int* nRoots, float* x1, float* x2)
 {
@@ -71,12 +44,6 @@ void SolveLinear(float b, float c, int* nRoots, float* x1, float* x2)
         }
     }
 }
-
-/**
-* @brief            Функция решения квадраного уравнения
-* @param Coeffs abc Коэффициенты уравнения
-* @param Roots *sol Корни уравнения и их количество
-*/
 
 void SolveQuad(Coeffs abc, Roots *sol)
 {
