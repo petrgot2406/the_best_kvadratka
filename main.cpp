@@ -19,9 +19,9 @@ int main()
 {
     struct Coeffs abc = {};
     struct Roots sol = {};
-    printf("¬ведите 1, чтобы запустить тесты\n");
-    printf("¬ведите 2, чтобы решить квадратное уравнение\n");
-    printf("¬ведите 3, чтобы выйти из программы\n");
+    printf("Input 1 to run tests\n");
+    printf("Input 2 to solve quadratic equation\n");
+    printf("Input 3 to exit the program\n");
     int selection = 0;
     scanf("%d", &selection);
     switch(selection)
@@ -51,7 +51,7 @@ int main()
                 }
         case 3: return 0;
         default: txSetConsoleAttr (FOREGROUND_RED | BACKGROUND_BLACK);
-                 printf("ќшибка ввода данных\n");
+                 printf("Data entry error\n");
                  txSetConsoleAttr (FOREGROUND_WHITE | BACKGROUND_BLACK);
                  main();
                  break;
